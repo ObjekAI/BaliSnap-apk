@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">BaliSnap</string>
+    <string name="searchbar_hint">Masukkan kata</string>
+    <string name="this_activity">Ini adalah menu activity</string>
+    <string name="menu_1">Menu 1</string>
+    <string name="menu_2">Menu 2</string>
+    <string name="nama_wisata">wisata\n</string>
+    <string name="scan_photo">SCAN</string>
+    <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
+
+</resources>
