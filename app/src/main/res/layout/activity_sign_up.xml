@@ -79,17 +79,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
 
-    <TextView
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:clickable="true"
-        app:layout_constraintBottom_toTopOf="@id/sign_up_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password_edit_text" />
-
     <Button
         android:id="@+id/sign_up_button"
         android:layout_width="0dp"
