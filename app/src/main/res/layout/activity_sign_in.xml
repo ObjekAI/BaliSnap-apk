@@ -3,16 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="20dp">
+
+    <ImageView
+        android:layout_width="714dp"
+        android:layout_height="800dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/gapurakiri" />
+
+    <ImageView
+        android:layout_width="714dp"
+        android:layout_height="800dp"
+        app:layout_constraintStart_toEndOf="@+id/logo_image_view"
+        app:srcCompat="@drawable/gapurakanan"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="0dp" />
 
     <ImageView
         android:id="@+id/logo_image_view"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/logo"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="135dp"
+        app:srcCompat="@drawable/logo"
+        app:layout_editor_absoluteX="135dp"
+        app:layout_editor_absoluteY="120dp"/>
 
     <TextView
         android:id="@+id/sign_in_text_view"
