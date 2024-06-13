@@ -57,16 +57,16 @@ class ImageClassifierHelper(
                 optionsBuilder.build()
             )
         } catch (e: IllegalStateException) {
-            classifierListener?.onError(context.getString(R.string.gambarKosong))
-            Log.e(TAG, e.message.toString())
+            classifierListener?.onError("Error initializing ImageClassifier: ${e.message}")
+            Log.e(TAG, "Error initializing ImageClassifier", e)
         }
 
     }
 
     fun classifyStaticImage(imageUri: Uri) {
-
         if (imageClassifier == null) {
-            setupImageClassifier()
+            classifierListener?.onError("ImageClassifier is not initialized.")
+            return
         }
 
         val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -78,21 +78,22 @@ class ImageClassifierHelper(
 
         val imageProcessor = ImageProcessor.Builder()
             .add(ResizeOp(224, 224, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
-            .add(CastOp(DataType.UINT8))
+            .add(CastOp(DataType.FLOAT32))
+            .add(NormalizeOp(127.5f, 127.5f))  // Normalization step sesuai dengan metadata
             .build()
 
         val tensorImage = imageProcessor.process(TensorImage.fromBitmap(bitmap))
 
-        var inferenceTime = SystemClock.uptimeMillis()
-        val results = imageClassifier?.classify(tensorImage)
-        inferenceTime = SystemClock.uptimeMillis() - inferenceTime
-        classifierListener?.onResults(
-            results,
-            inferenceTime
-        )
+        try {
+            var inferenceTime = SystemClock.uptimeMillis()
+            val results = imageClassifier?.classify(tensorImage)
+            inferenceTime = SystemClock.uptimeMillis() - inferenceTime
+            classifierListener?.onResults(results, inferenceTime)
+        } catch (e: Exception) {
+            classifierListener?.onError("Error during classification: ${e.message}")
+            Log.e(TAG, "Error during classification", e)
+        }
     }
-
-
 
     companion object {
         private const val TAG = "ImageHelper"

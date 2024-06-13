@@ -2,6 +2,7 @@ package com.bangkit.balisnap
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.core.net.toUri
 import com.bangkit.balisnap.databinding.ActivityResultBinding
 
@@ -15,13 +16,14 @@ class ResultActivity : AppCompatActivity() {
         binding = ActivityResultBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        val image = intent.extras?.getString(MainActivity.IMG_CLASS).toString()
-        val prediksi = intent.extras?.getString(MainActivity.PREDIKSI).toString()
-//        val persen = intent.extras?.getString(MainActivity.PERSEN).toString()
 
-//        binding.resultImage.setImageURI(image.toUri())
-        binding.hasil.text = "Prediksi: ${prediksi}"
-//        binding.resultScore.text = "Nilai Prediksi: ${persen}"
+        val prediksi = intent.getStringExtra(MainActivity.PREDIKSI)
+        val persen = intent.getStringExtra(MainActivity.PERSEN)
+
+        // Display the prediction results
+        binding.hasil.text = "Prediksi: $prediksi"
+        Log.d(persen, "awwww")
+//        binding.resultScore.text = "Nilai Prediksi: $persen"
 
     }
 }

@@ -166,39 +166,41 @@ class MainActivity : AppCompatActivity() {
             REQUIRED_PERMISSION
         ) == PackageManager.PERMISSION_GRANTED
 
-    private fun analyzeImage(dataUri : Uri) {
-        var prediksi_img = ""
-        var persen_img = ""
+    private fun analyzeImage(dataUri: Uri) {
         val imageClassifierHelper = ImageClassifierHelper(
             context = this,
             classifierListener = object : ImageClassifierHelper.ClassifierListener {
                 override fun onError(error: String) {
-                    Log.d(ContentValues.TAG, "ShowImage: ${error}")
-
+                    Log.d(ContentValues.TAG, "ShowImage: $error")
+                    Toast.makeText(this@MainActivity, "Error: $error", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
                     results?.let {
-                        val Result = it[0]
-                        val prediksi = Result.categories[0].label
-                        val persen = Result.categories[0].score
+                        val result = it[0]
+                        val prediksi = result.categories[0].label
+                        val persen = result.categories[0].score
 
                         fun Float.formatToString(): String {
                             return String.format("%.2f%%", this * 100)
                         }
 
-                        prediksi_img = results.toString()
-                        persen_img = persen.formatToString()
+                        val prediksi_img = prediksi
+                        val persen_img = persen.formatToString()
+
+                        // Start ResultActivity with prediction results
+                        val intent = Intent(this@MainActivity, ResultActivity::class.java)
+                        intent.putExtra(PREDIKSI, prediksi_img)
+                        intent.putExtra(PERSEN, persen_img)
+                        startActivity(intent)
                     }
                 }
             }
         )
         imageClassifierHelper.classifyStaticImage(dataUri)
-        val intent = Intent(this, ResultActivity::class.java)
-        intent.putExtra(PREDIKSI, prediksi_img)
-        intent.putExtra(PERSEN, persen_img)
-        startActivity(intent)
     }
+
+
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
