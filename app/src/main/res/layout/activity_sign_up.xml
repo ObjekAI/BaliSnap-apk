@@ -3,8 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="20dp">
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="714dp"
+        android:layout_height="800dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/gapurakiri" />
+
+    <ImageView
+        android:layout_width="714dp"
+        android:layout_height="800dp"
+        app:srcCompat="@drawable/gapurakanan"
+        tools:layout_editor_absoluteX="270dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints" />
+
+
 
     <ImageView
         android:id="@+id/logo_image_view"
@@ -87,7 +103,8 @@
         android:clickable="true"
         app:layout_constraintBottom_toTopOf="@id/sign_up_button"
         app:layout_constraintTop_toBottomOf="@+id/password_edit_text"
-        android:layout_marginLeft="200dp"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
 
     <Button
         android:id="@+id/sign_up_button"
