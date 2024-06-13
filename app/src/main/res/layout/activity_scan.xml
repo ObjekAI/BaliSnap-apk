@@ -35,11 +35,11 @@
         android:id="@+id/gallery"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="55dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="@+id/viewFinder"
         app:layout_constraintTop_toTopOf="@id/switchCamera"
-        app:srcCompat="@drawable/ic_switch_camera" />
+        app:srcCompat="@drawable/galleryincamera" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
