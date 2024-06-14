@@ -140,21 +140,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getLocation() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            viewModel.getLastKnownLocation { location: Location? ->
-                location?.let {
-                    getAddressFromLocation(it.latitude, it.longitude)
-                } ?: run {
-                    Toast.makeText(this@MainActivity, getString(R.string.location_not_found), Toast.LENGTH_SHORT).show()
-                }
-            }
-        } else {
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_REQUEST_CODE)
-        }
-    }
+//    private fun getLocation() {
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//            viewModel.getLastKnownLocation { location: Location? ->
+//                location?.let {
+//                    getAddressFromLocation(it.latitude, it.longitude)
+//                } ?: run {
+//                    Toast.makeText(this@MainActivity, getString(R.string.location_not_found), Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        } else {
+//            ActivityCompat.requestPermissions(this,
+//                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+//                LOCATION_PERMISSION_REQUEST_CODE)
+//        }
+//    }
 
     @SuppressLint("StringFormatInvalid")
     private fun getAddressFromLocation(latitude: Double, longitude: Double) {
