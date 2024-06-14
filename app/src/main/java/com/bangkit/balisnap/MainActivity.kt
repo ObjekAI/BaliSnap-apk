@@ -27,6 +27,8 @@ import com.bangkit.balisnap.viewmodel.MainViewModel
 import com.bangkit.balisnap.utils.Result
 import com.bangkit.balisnap.utils.rotateBitmap
 import com.bangkit.balisnap.viewmodel.ViewModelFactory
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,6 +46,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val LOCATION_PERMISSION_REQUEST_CODE = 1
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +57,13 @@ class MainActivity : AppCompatActivity() {
 
         if (!allPermissionsGranted()) {
             requestPermissionLauncher.launch(REQUIRED_PERMISSION)
+        }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+        } else {
+            getLocation()
         }
 
         binding.scanButton.setOnClickListener{startCameraX()}
@@ -140,23 +151,39 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun getLocation() {
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//            viewModel.getLastKnownLocation { location: Location? ->
-//                location?.let {
-//                    getAddressFromLocation(it.latitude, it.longitude)
-//                } ?: run {
-//                    Toast.makeText(this@MainActivity, getString(R.string.location_not_found), Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        } else {
-//            ActivityCompat.requestPermissions(this,
-//                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-//                LOCATION_PERMISSION_REQUEST_CODE)
-//        }
-//    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                getLocation()
+            } else {
+                binding.namalokasi.text = getString(R.string.location_permission_denied)
+                Toast.makeText(this, getString(R.string.location_need_permission), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
-    @SuppressLint("StringFormatInvalid")
+    private fun getLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            viewModel.getLastKnownLocation { location: Location? ->
+                Log.e("lokasi", "${location}")
+                location?.let {
+                    getAddressFromLocation(it.latitude, it.longitude)
+                } ?: run {
+                    Toast.makeText(this@MainActivity, getString(R.string.location_not_found), Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE)
+        }
+    }
+
     private fun getAddressFromLocation(latitude: Double, longitude: Double) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -171,12 +198,14 @@ class MainActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    binding.namalokasi.text = getString(R.string.location_error, e.message)
-                    Toast.makeText(this@MainActivity, getString(R.string.location_error, e.message), Toast.LENGTH_LONG).show()
+                    binding.namalokasi.text = getString(R.string.location_error_name, e.message)
+                    Toast.makeText(this@MainActivity, getString(R.string.location_error_name, e.message), Toast.LENGTH_LONG).show()
                 }
             }
         }
     }
+
+
 
     private fun startCameraX() {
         val intent = Intent(this, ScanActivity::class.java)

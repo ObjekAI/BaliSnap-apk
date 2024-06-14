@@ -10,5 +10,8 @@
     <string name="gambarKosong">ksosng</string>
     <string name="location_not_found">location not found</string>
     <string name="location_error">location error</string>
+    <string name="location_permission_denied">location denied</string>
+    <string name="location_need_permission">location need permission</string>
+    <string name="location_error_name">location error</string>
 
 </resources>

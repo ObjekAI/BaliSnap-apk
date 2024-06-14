@@ -13,14 +13,14 @@ import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.tasks.await
 
 class DestinationRepository private constructor(
-//    context: Context,
+    context: Context,
     private val apiService: ApiService,
 
 
     ) {
-//    private val appContext = context.applicationContext
-//    private val fusedLocationClient: FusedLocationProviderClient =
-//        LocationServices.getFusedLocationProviderClient(context.applicationContext)
+    private val appContext = context.applicationContext
+    private val fusedLocationClient: FusedLocationProviderClient =
+        LocationServices.getFusedLocationProviderClient(context.applicationContext)
 
     fun getDestination(lat : Double, lon : Double, radius : Int) = liveData {
         emit(Result.Loading)
@@ -42,28 +42,30 @@ class DestinationRepository private constructor(
         }
     }
 
-//    suspend fun getLastKnownLocation(): Location? {
-//        return try {
-//            if (ContextCompat.checkSelfPermission(appContext, Manifest.permission.ACCESS_FINE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED) {
-//                fusedLocationClient.lastLocation.await()
-//            } else {
-//                null
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            null
-//        }
-//    }
+    suspend fun getLastKnownLocation(): Location? {
+        return try {
+            if (ContextCompat.checkSelfPermission(appContext, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+                fusedLocationClient.lastLocation.await()
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
 
     companion object {
         @Volatile
         private var instance: DestinationRepository? = null
         fun getInstance(
+            context: Context,
             apiService: ApiService
+
         ): DestinationRepository =
             instance ?: synchronized(this) {
-                instance ?: DestinationRepository(apiService)
+                instance ?: DestinationRepository(context, apiService)
             }.also { instance = it }
     }
 

@@ -17,12 +17,12 @@ class MainViewModel(private val destinationrepo: DestinationRepository) : ViewMo
     fun getSearchDestination(name: String) =
         destinationrepo.getSearchDestination(name)
 
-//    fun getLastKnownLocation(onLocationRetrieved: (Location?) -> Unit) {
-//        viewModelScope.launch {
-//            val location = withContext(Dispatchers.IO) {
-//                DestinationRepository.getLastKnownLocation()
-//            }
-//            onLocationRetrieved(location)
-//        }
-//    }
+    fun getLastKnownLocation(onLocationRetrieved: (Location?) -> Unit) {
+        viewModelScope.launch {
+            val location = withContext(Dispatchers.IO) {
+                destinationrepo.getLastKnownLocation()
+            }
+            onLocationRetrieved(location)
+        }
+    }
 }
