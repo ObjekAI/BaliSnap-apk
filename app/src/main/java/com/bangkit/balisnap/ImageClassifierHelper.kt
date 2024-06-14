@@ -22,7 +22,7 @@ import org.tensorflow.lite.task.vision.classifier.ImageClassifier
 class ImageClassifierHelper(
     var threshold: Float = 0.1f,
     var maxResults: Int = 3,
-    val modelName: String = "my_model.tflite",
+    val modelName: String = "model_with_metadata.tflite",
     val context: Context,
     val classifierListener: ClassifierListener?) {
 
@@ -60,7 +60,6 @@ class ImageClassifierHelper(
             classifierListener?.onError("Error initializing ImageClassifier: ${e.message}")
             Log.e(TAG, "Error initializing ImageClassifier", e)
         }
-
     }
 
     fun classifyStaticImage(imageUri: Uri) {
