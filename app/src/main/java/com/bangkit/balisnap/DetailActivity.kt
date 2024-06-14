@@ -1,10 +1,12 @@
 package com.bangkit.balisnap
 
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
+import com.bangkit.balisnap.activity.SignInActivity
 import com.bumptech.glide.Glide
 import com.bangkit.balisnap.adapter.MainAdapter
 import com.bangkit.balisnap.databinding.ActivityDetailBinding
@@ -22,6 +24,11 @@ class DetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupView()
+
+        binding.back.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 

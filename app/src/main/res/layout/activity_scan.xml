@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ScanActivity">
 
+
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
@@ -40,6 +41,18 @@
         app:layout_constraintEnd_toEndOf="@+id/viewFinder"
         app:layout_constraintTop_toTopOf="@id/switchCamera"
         app:srcCompat="@drawable/galleryincamera" />
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:srcCompat="@drawable/back"
+        android:background="@drawable/roundbg"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

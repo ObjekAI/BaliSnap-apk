@@ -40,6 +40,11 @@ class ScanActivity : AppCompatActivity() {
             startCamera()
         }
         binding.gallery.setOnClickListener { startGallery() }
+
+        binding.back.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 

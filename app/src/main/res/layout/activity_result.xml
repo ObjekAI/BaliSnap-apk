@@ -11,16 +11,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/back"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/hasil"
+        android:layout_marginTop="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="HASIL"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Location based on the photo"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toBottomOf="@id/back"
         tools:ignore="MissingConstraints" />
 
 
@@ -34,13 +39,16 @@
             tools:listitem="@layout/item_wisata"
             app:layout_constraintBottom_toTopOf="@id/deket"/>
 
-        <TextView
-            android:id="@+id/deket"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="deket"
-            app:layout_constraintTop_toBottomOf="@id/recyclerview"
-            tools:ignore="MissingConstraints" />
+    <TextView
+        android:id="@+id/deket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Other destination near the location"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerview"
+        android:layout_marginLeft="20dp"
+        tools:ignore="MissingConstraints" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/bawah"
