@@ -8,5 +8,7 @@
     <string name="scan_photo">SCAN</string>
     <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
     <string name="gambarKosong">ksosng</string>
+    <string name="location_not_found">location not found</string>
+    <string name="location_error">location error</string>
 
 </resources>

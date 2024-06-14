@@ -1,10 +1,13 @@
 package com.bangkit.balisnap
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.location.Geocoder
+import android.location.Location
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,18 +15,25 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bangkit.balisnap.ScanActivity.Companion.CAMERAX_RESULT
 import com.bangkit.balisnap.adapter.MainAdapter
 import com.bangkit.balisnap.databinding.ActivityMainBinding
+import com.bangkit.balisnap.response.DestinationsItem
 import com.bangkit.balisnap.viewmodel.MainViewModel
 import com.bangkit.balisnap.utils.Result
 import com.bangkit.balisnap.utils.rotateBitmap
 import com.bangkit.balisnap.viewmodel.ViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.tensorflow.lite.task.vision.classifier.Classifications
 import java.io.File
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,6 +42,8 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(this)
     }
+
+    private val LOCATION_PERMISSION_REQUEST_CODE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,6 +136,44 @@ class MainActivity : AppCompatActivity() {
                     Log.e("gabisa", "${it.error}")
                 }
 
+            }
+        }
+    }
+
+    private fun getLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            viewModel.getLastKnownLocation { location: Location? ->
+                location?.let {
+                    getAddressFromLocation(it.latitude, it.longitude)
+                } ?: run {
+                    Toast.makeText(this@MainActivity, getString(R.string.location_not_found), Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE)
+        }
+    }
+
+    @SuppressLint("StringFormatInvalid")
+    private fun getAddressFromLocation(latitude: Double, longitude: Double) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val geocoder = Geocoder(this@MainActivity, Locale.getDefault())
+                val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+                if (!addresses.isNullOrEmpty()) {
+                    val address = addresses[0]
+                    val locationName = address.getAddressLine(0)
+                    withContext(Dispatchers.Main) {
+                        binding.namalokasi.text = locationName
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    binding.namalokasi.text = getString(R.string.location_error, e.message)
+                    Toast.makeText(this@MainActivity, getString(R.string.location_error, e.message), Toast.LENGTH_LONG).show()
+                }
             }
         }
     }

@@ -79,9 +79,16 @@ dependencies {
 //    implementation("com.google.firebase:firebase-auth")
     implementation ("com.google.firebase:firebase-auth:23.0.0")
 
+    //camera
     val cameraxVersion = "1.2.3"
     implementation("androidx.camera:camera-camera2:$cameraxVersion")
     implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
     implementation("androidx.camera:camera-view:$cameraxVersion")
     implementation("androidx.exifinterface:exifinterface:1.3.6")
+
+    //location
+    implementation("com.google.android.gms:play-services-maps:18.0.0")
+    implementation("com.google.android.gms:play-services-location:18.0.0")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+
 }
