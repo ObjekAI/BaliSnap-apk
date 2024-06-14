@@ -1,9 +1,11 @@
 package com.bangkit.balisnap
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.core.net.toUri
+import com.bangkit.balisnap.activity.SignInActivity
 import com.bangkit.balisnap.databinding.ActivityResultBinding
 
 class ResultActivity : AppCompatActivity() {
@@ -24,6 +26,11 @@ class ResultActivity : AppCompatActivity() {
         binding.hasil.text = "Prediksi: $prediksi"
         Log.d(persen, "awwww")
 //        binding.resultScore.text = "Nilai Prediksi: $persen"
+
+        binding.back.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }

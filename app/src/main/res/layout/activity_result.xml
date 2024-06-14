@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ResultActivity">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/hasil"
@@ -17,32 +24,32 @@
         tools:ignore="MissingConstraints" />
 
 
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        android:id="@+id/recyclerview"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="140dp"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/hasil"-->
-    <!--        tools:listitem="@layout/item_wisata"-->
-    <!--        app:layout_constraintBottom_toTopOf="@id/deket"/>-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="0dp"
+            android:layout_height="140dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hasil"
+            tools:listitem="@layout/item_wisata"
+            app:layout_constraintBottom_toTopOf="@id/deket"/>
 
-    <!--    <TextView-->
-    <!--        android:id="@+id/deket"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="deket"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/recyclerview"-->
-    <!--        tools:ignore="MissingConstraints" />-->
+        <TextView
+            android:id="@+id/deket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="deket"
+            app:layout_constraintTop_toBottomOf="@id/recyclerview"
+            tools:ignore="MissingConstraints" />
 
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        android:id="@+id/bawah"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/deket"-->
-    <!--        tools:listitem="@layout/item_wisata"/>-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bawah"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/deket"
+            tools:listitem="@layout/item_wisata"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
