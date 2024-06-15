@@ -2,8 +2,6 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
-    id("kotlin-parcelize")
-    id("com.google.devtools.ksp")
 }
 
 android {
@@ -90,8 +88,5 @@ dependencies {
 
     //location
     implementation("com.google.android.gms:play-services-location:21.3.0")
-
-    implementation("androidx.room:room-common:2.6.1")
-    implementation("androidx.room:room-runtime:2.5.2")
-    ksp("androidx.room:room-compiler:2.5.2")
+    
 }
