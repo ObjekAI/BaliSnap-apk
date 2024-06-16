@@ -21,8 +21,8 @@ import org.tensorflow.lite.task.vision.classifier.ImageClassifier
 @Suppress("DEPRECATION")
 class ImageClassifierHelper(
     var threshold: Float = 0.1f,
-    var maxResults: Int = 3,
-    val modelName: String = "model_with_metadataa.tflite",
+    var maxResults: Int = 5,
+    val modelName: String = "model_with_metadata.tflite",
     val context: Context,
     val classifierListener: ClassifierListener?) {
 
@@ -57,15 +57,16 @@ class ImageClassifierHelper(
                 optionsBuilder.build()
             )
         } catch (e: IllegalStateException) {
-            classifierListener?.onError("Error initializing ImageClassifier: ${e.message}")
-            Log.e(TAG, "Error initializing ImageClassifier", e)
+            classifierListener?.onError(context.getString(R.string.gambarKosong))
+            Log.e(TAG, e.message.toString())
         }
+
     }
 
     fun classifyStaticImage(imageUri: Uri) {
+
         if (imageClassifier == null) {
-            classifierListener?.onError("ImageClassifier is not initialized.")
-            return
+            setupImageClassifier()
         }
 
         val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -77,22 +78,21 @@ class ImageClassifierHelper(
 
         val imageProcessor = ImageProcessor.Builder()
             .add(ResizeOp(224, 224, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
-            .add(CastOp(DataType.FLOAT32))
-            .add(NormalizeOp(127.5f, 127.5f))  // Normalization step sesuai dengan metadata
+            .add(CastOp(DataType.UINT8))
             .build()
 
         val tensorImage = imageProcessor.process(TensorImage.fromBitmap(bitmap))
 
-        try {
-            var inferenceTime = SystemClock.uptimeMillis()
-            val results = imageClassifier?.classify(tensorImage)
-            inferenceTime = SystemClock.uptimeMillis() - inferenceTime
-            classifierListener?.onResults(results, inferenceTime)
-        } catch (e: Exception) {
-            classifierListener?.onError("Error during classification: ${e.message}")
-            Log.e(TAG, "Error during classification", e)
-        }
+        var inferenceTime = SystemClock.uptimeMillis()
+        val results = imageClassifier?.classify(tensorImage)
+        inferenceTime = SystemClock.uptimeMillis() - inferenceTime
+        classifierListener?.onResults(
+            results,
+            inferenceTime
+        )
     }
+
+
 
     companion object {
         private const val TAG = "ImageHelper"
