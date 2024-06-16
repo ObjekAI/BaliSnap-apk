@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {
-    private val authRepostiory = AuthRepostiory()
+    private val authRepository = AuthRepostiory()
 
     private val _userLiveData = MutableLiveData<FirebaseUser?>()
     val userLiveData: LiveData<FirebaseUser?> = _userLiveData
@@ -20,8 +20,8 @@ class AuthViewModel : ViewModel() {
     fun signUp(name: String, email: String, password: String) {
         viewModelScope.launch {
             try {
-                var user = authRepostiory.signUp(email, password)
-                user = authRepostiory.setDisplayName(name, user)
+                var user = authRepository.signUp(email, password)
+                user = authRepository.setDisplayName(name, user)
                 _userLiveData.postValue(user)
             } catch (e: Exception) {
                 _errorLiveData.postValue(e.message)
@@ -32,11 +32,19 @@ class AuthViewModel : ViewModel() {
     fun signIn(email: String, password: String) {
         viewModelScope.launch {
             try {
-                val user = authRepostiory.signIn(email, password)
+                val user = authRepository.signIn(email, password)
                 _userLiveData.postValue(user)
             } catch (e: Exception) {
                 _errorLiveData.postValue(e.message)
             }
+        }
+    }
+
+    fun signOut() {
+        try {
+            authRepository.signOut()
+        } catch (e: Exception) {
+            _errorLiveData.postValue(e.message)
         }
     }
 }

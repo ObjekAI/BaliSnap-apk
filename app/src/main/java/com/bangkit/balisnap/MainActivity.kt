@@ -20,10 +20,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bangkit.balisnap.ScanActivity.Companion.CAMERAX_RESULT
+import com.bangkit.balisnap.activity.SignInActivity
 import com.bangkit.balisnap.adapter.MainAdapter
 import com.bangkit.balisnap.databinding.ActivityMainBinding
 import com.bangkit.balisnap.response.DestinationsItem
 import com.bangkit.balisnap.viewmodel.MainViewModel
+import com.bangkit.balisnap.viewmodel.AuthViewModel
 import com.bangkit.balisnap.utils.Result
 import com.bangkit.balisnap.utils.rotateBitmap
 import com.bangkit.balisnap.viewmodel.ViewModelFactory
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityMainBinding
+    private val authViewModel: AuthViewModel by viewModels()
     private val viewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(this)
     }
@@ -113,6 +116,15 @@ class MainActivity : AppCompatActivity() {
                 }
 
 
+        }
+
+        binding.buttonSignOut.setOnClickListener{
+            authViewModel.signOut()
+            Toast.makeText(this, "Sign Out Successful", Toast.LENGTH_SHORT).show()
+            // Navigate to another activity or perform other actions
+            val intent = Intent(this, SignInActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
     }
@@ -290,6 +302,5 @@ class MainActivity : AppCompatActivity() {
         const val PREDIKSI = "LABEL"
         const val PERSEN = "SCORE"
     }
-
 
 }

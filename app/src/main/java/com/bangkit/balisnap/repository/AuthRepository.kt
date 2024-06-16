@@ -18,6 +18,10 @@ class AuthRepostiory {
         return result.user
     }
 
+    fun signOut() {
+        firebaseAuth.signOut()
+    }
+
     suspend fun setDisplayName(name: String, user: FirebaseUser?): FirebaseUser?{
         user?.let {
             val profileUpdates = UserProfileChangeRequest.Builder().setDisplayName(name).build()

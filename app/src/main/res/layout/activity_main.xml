@@ -8,6 +8,45 @@
     tools:context=".MainActivity">
 
 
+    <ImageButton
+        android:id="@+id/button_sign_out"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/gambarKosong"
+        app:srcCompat="@drawable/sign_out"
+        app:tint="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/searchBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_favorite"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/button_favorite"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/gambarKosong"
+        app:srcCompat="@drawable/like"
+        app:tint="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/searchBar"
+        app:layout_constraintEnd_toStartOf="@+id/button_sign_out"
+        app:layout_constraintStart_toEndOf="@+id/textView_welcome_user"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_welcome_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="100dp"
+        android:textSize="15dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Hi, Welcome to BaliSnap"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/searchBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.search.SearchBar
         android:id="@+id/searchBar"
@@ -18,7 +57,7 @@
         android:hint="@string/searchbar_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/textView_welcome_user">
     </com.google.android.material.search.SearchBar>
 
     <com.google.android.material.search.SearchView
@@ -29,8 +68,11 @@
         app:layout_anchor="@id/searchBar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
     </com.google.android.material.search.SearchView>
 
     <ImageView
