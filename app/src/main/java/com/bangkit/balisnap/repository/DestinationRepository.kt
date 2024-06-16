@@ -4,9 +4,11 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.liveData
 import com.bangkit.balisnap.api.ApiService
+import com.bangkit.balisnap.response.DestinationResponse
 import com.bangkit.balisnap.utils.Result
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -32,14 +34,12 @@ class DestinationRepository private constructor(
         }
     }
 
-    fun getSearchDestination(name:String) = liveData{
-        emit(Result.Loading)
-        try {
-            val response = apiService.getSearchDestination(name)
-            emit(Result.Success(response))
-        } catch (e: Exception) {
-            emit(Result.Error("${e.message}"))
-        }
+    suspend fun getNearbyDestinations(latitude: Double, longitude: Double, radius: Int): DestinationResponse {
+        return apiService.getDestination(latitude, longitude, radius)
+    }
+
+    suspend fun getSearchDestination(name: String): DestinationResponse {
+        return apiService.getSearchDestination(name)
     }
 
     suspend fun getLastKnownLocation(): Location? {
