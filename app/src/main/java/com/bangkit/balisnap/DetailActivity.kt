@@ -17,36 +17,22 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
-        supportActionBar?.hide()
-
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.hide()
 
         setupView()
 
         binding.back.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            onBackPressed()
         }
-
     }
 
     private fun setupView() {
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
-        supportActionBar?.hide()
-
-        val image = intent.extras?.getString(MainAdapter.IMAGE_STORY).toString()
-        val title = intent.extras?.getString(MainAdapter.TITLE_STORY).toString()
-        val desc = intent.extras?.getString(MainAdapter.DESC_STORY).toString()
+        val image = intent.getStringExtra(MainAdapter.IMAGE_STORY)
+        val title = intent.getStringExtra(MainAdapter.TITLE_STORY)
+        val desc = intent.getStringExtra(MainAdapter.DESC_STORY)
 
         Glide.with(this)
             .load(image)
@@ -54,5 +40,11 @@ class DetailActivity : AppCompatActivity() {
 
         binding.namaWisata.text = title
         binding.deskripsiWisata.text = desc
+    }
+
+    companion object {
+        const val IMAGE_STORY = "IMAGE_STORY"
+        const val TITLE_STORY = "TITLE_STORY"
+        const val DESC_STORY = "DESC_STORY"
     }
 }

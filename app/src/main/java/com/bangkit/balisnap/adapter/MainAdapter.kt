@@ -18,6 +18,8 @@ import com.bangkit.balisnap.response.DestinationsItem
 
 class MainAdapter : ListAdapter<DestinationsItem, MainAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
+    private var onItemClickListener: ((DestinationsItem) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ItemWisataBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
@@ -26,13 +28,11 @@ class MainAdapter : ListAdapter<DestinationsItem, MainAdapter.MyViewHolder>(DIFF
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val story = getItem(position)
         holder.bind(story)
-        Glide.with(holder.imgstory.getContext())
+        Glide.with(holder.itemView.context)
             .load("https://storage.googleapis.com/balisnap-storage/${story.image}")
-            .into(holder.imgstory);
+            .into(holder.imgstory)
         holder.itemView.setOnClickListener {
-            val intentDetailStory =
-                Intent(holder.itemView.context, DetailActivity::class.java)
-            holder.itemView.context.startActivity(intentDetailStory)
+            onItemClickListener?.invoke(story)
         }
     }
 
@@ -54,11 +54,14 @@ class MainAdapter : ListAdapter<DestinationsItem, MainAdapter.MyViewHolder>(DIFF
     class MyViewHolder(val binding: ItemWisataBinding) : RecyclerView.ViewHolder(binding.root) {
         val imgstory: ImageView = itemView.findViewById(R.id.img_item_photo)
         fun bind(story: DestinationsItem) {
-            binding.tvItemName.text = "${story.name}"
-            binding.tvItemDesc.text = "${story.description}"
+            binding.tvItemName.text = story.name
+            binding.tvItemDesc.text = story.description
         }
     }
 
+    fun setOnItemClickListener(listener: (DestinationsItem) -> Unit) {
+        onItemClickListener = listener
+    }
     companion object {
         const val IMAGE_STORY = "IMAGE_STORY"
         const val TITLE_STORY = "TITLE_STORY"
@@ -74,5 +77,4 @@ class MainAdapter : ListAdapter<DestinationsItem, MainAdapter.MyViewHolder>(DIFF
             }
         }
     }
-
 }

@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     private val LOCATION_PERMISSION_REQUEST_CODE = 1
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
+    private lateinit var adapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,39 +58,48 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (!allPermissionsGranted()) {
-            requestPermissionLauncher.launch(REQUIRED_PERMISSION)
+        // Inisialisasi adapter RecyclerView
+        adapter = MainAdapter()
+        binding.recyclerview.layoutManager = LinearLayoutManager(this)
+        binding.recyclerview.adapter = adapter
+
+        // Setup fungsi pencarian
+        binding.searchView.setupWithSearchBar(binding.searchBar)
+        binding.searchView.editText.setOnEditorActionListener { _, _, _ ->
+            binding.searchBar.setText(binding.searchView.text)
+            binding.searchView.hide()
+            getSearch(binding.searchBar.text.toString())
+            false
         }
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
-        } else {
-            getLocation()
+        // Setup onClickListener untuk item di RecyclerView
+        adapter.setOnItemClickListener { destination ->
+            onItemClick(destination)
         }
 
-        binding.scanButton.setOnClickListener{startCameraX()}
+        // Setup onClickListener untuk scanButton
+        binding.scanButton.setOnClickListener {
+            startCameraX()
+        }
 
-        viewModel.getDestination(-8.724451, 115.176827, 1000).observe(this) {
-            when (it) {
-                is Result.Loading -> {
 
-                }
-
+        viewModel.getDestination(-8.724451, 115.176827, 1000).observe(this) { result ->
+            when (result) {
                 is Result.Success -> {
-
-                    val adapter = MainAdapter()
-                    adapter.submitList(it.data.data!!.destinations)
-                    binding.recyclerview.layoutManager = LinearLayoutManager(this)
-                    binding.recyclerview.adapter = adapter
-
-//                    Log.e("bisa", "${it.data.data!!.destinations}")
+                    adapter.submitList(result.data.data?.destinations)
                 }
-
                 is Result.Error -> {
-//                    Log.e("gabisa", "${it.error}")
+                    Log.e("MainActivity", "Error: ${result.error}")
+                    Toast.makeText(this, "Error: ${result.error}", Toast.LENGTH_SHORT).show()
                 }
-
+                is Result.Loading -> {
+                    // Tangani kasus loading di sini jika diperlukan
+                }
+                else -> {
+                    // Tangani kasus lain yang mungkin terjadi
+                    Log.e("MainActivity", "Unexpected result: $result")
+                    Toast.makeText(this, "Unexpected result", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -127,38 +136,40 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-    }
 
-//    fun onItemClick(wisata: DestinationsItem) {
-//        val intent = Intent(this, DetailActivity::class.java).apply {
-//            putExtra(MainAdapter.IMAGE_STORY, wisata.image)
-//            putExtra(MainAdapter.TITLE_STORY, wisata.name)
-//            putExtra(MainAdapter.DESC_STORY, wisata.description)
-//        }
-//        startActivity(intent)
-//    }
+    if (!allPermissionsGranted()) {
+        requestPermissionLauncher.launch(REQUIRED_PERMISSION)
+    } else {
+        getLocation()
+    }
+}
+
+fun onItemClick(destination: DestinationsItem) {
+    val intent = Intent(this, DetailActivity::class.java).apply {
+        putExtra(MainAdapter.IMAGE_STORY, "https://storage.googleapis.com/balisnap-storage/${destination.image}")
+        putExtra(MainAdapter.TITLE_STORY, destination.name)
+        putExtra(MainAdapter.DESC_STORY, destination.description)
+    }
+    startActivity(intent)
+}
+
 
     private fun getSearch(name: String) {
         viewModel.getSearchDestination(name).observe(this) {
             when (it) {
                 is Result.Loading -> {
-
+                    // Tampilkan indikator loading jika diperlukan
                 }
 
                 is Result.Success -> {
-                    val adapter = MainAdapter()
-                    adapter.submitList(it.data.data!!.destinations)
-                    binding.recyclerview.layoutManager = LinearLayoutManager(this)
-                    binding.recyclerview.adapter = adapter
-                    adapter.notifyDataSetChanged()
-
-                    Log.e("bisa", "${it.data.data!!.destinations}")
+                    adapter.submitList(it.data.data?.destinations)
                 }
 
                 is Result.Error -> {
-                    Log.e("gabisa", "${it.error}")
+                    Log.e("MainActivity", "Error: ${it.error}")
+                    Toast.makeText(this, "Error: ${it.error}", Toast.LENGTH_SHORT).show()
+                    // Tambahkan penanganan error jika diperlukan
                 }
-
             }
         }
     }
@@ -182,7 +193,7 @@ class MainActivity : AppCompatActivity() {
     private fun getLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             viewModel.getLastKnownLocation { location: Location? ->
-                Log.e("lokasi", "${location}")
+                Log.e("lokasi", "$location")
                 location?.let {
                     getAddressFromLocation(it.latitude, it.longitude)
                 } ?: run {
@@ -210,8 +221,8 @@ class MainActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    binding.namalokasi.text = getString(R.string.location_error_name, e.message)
-                    Toast.makeText(this@MainActivity, getString(R.string.location_error_name, e.message), Toast.LENGTH_LONG).show()
+                    binding.namalokasi.text = getString(R.string.location_permission_denied)
+                    Toast.makeText(this@MainActivity, getString(R.string.location_need_permission), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -233,10 +244,8 @@ class MainActivity : AppCompatActivity() {
         }
         if (it.resultCode == CAMERAX_RESULT) {
             val myFile = it.data?.getSerializableExtra("picture") as File
-
             val uritoFile = Uri.fromFile(myFile)
             analyzeImage(uritoFile)
-
         }
     }
 
@@ -302,5 +311,5 @@ class MainActivity : AppCompatActivity() {
         const val PREDIKSI = "LABEL"
         const val PERSEN = "SCORE"
     }
-
 }
+
