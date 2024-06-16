@@ -39,14 +39,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="100dp"
-        android:textSize="15dp"
-        android:fontFamily="@font/poppins_semibold"
-        android:text="Hi, Welcome to BaliSnap"
-        app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/black"
+        android:layout_marginRight="130dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/welcome"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/searchBar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.search.SearchBar
         android:id="@+id/searchBar"
