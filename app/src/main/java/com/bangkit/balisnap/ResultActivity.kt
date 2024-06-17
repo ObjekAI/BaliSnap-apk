@@ -23,7 +23,7 @@ class ResultActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
 
-    private lateinit var adapter: MainAdapter
+    private lateinit var destinationAdapter: DestinationAdapter
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +38,17 @@ class ResultActivity : AppCompatActivity() {
         binding.hasil.text = "Location based on the photo: $prediksi"
         Log.d("Prediction", prediksi)
 
+        // Initialize the adapter
+        destinationAdapter = DestinationAdapter()
+
+        // Set the click listener
+        destinationAdapter.setOnItemClickListener { destination ->
+            onItemClick(destination)
+        }
+
+        binding.recyclerview.layoutManager = LinearLayoutManager(this)
+        binding.recyclerview.adapter = destinationAdapter
+
         if (prediksi.isNotEmpty()) {
             viewModel.getSearchDestination(prediksi).observe(this, Observer { result ->
                 when (result) {
@@ -49,9 +60,7 @@ class ResultActivity : AppCompatActivity() {
                         val destinations = result.data.data?.destinations ?: emptyList()
 
                         if (destinations.isNotEmpty()) {
-                            val adapter = DestinationAdapter(destinations)
-                            binding.recyclerview.layoutManager = LinearLayoutManager(this)
-                            binding.recyclerview.adapter = adapter
+                            destinationAdapter.submitList(destinations)
 
                             val destination = destinations[0]
                             val latitude = destination?.latitude?.toDoubleOrNull() ?: 0.0
@@ -67,9 +76,10 @@ class ResultActivity : AppCompatActivity() {
                                         val nearbyDestinations = nearbyResult.data.data?.destinations ?: emptyList()
 
                                         if (nearbyDestinations.isNotEmpty()) {
-                                            val nearbyAdapter = DestinationAdapter(nearbyDestinations)
+                                            val nearbyAdapter = DestinationAdapter()
                                             binding.bawah.layoutManager = LinearLayoutManager(this)
                                             binding.bawah.adapter = nearbyAdapter
+                                            nearbyAdapter.submitList(nearbyDestinations)
                                         } else {
                                             binding.deket.text = "No nearby destinations found"
                                         }
@@ -91,15 +101,13 @@ class ResultActivity : AppCompatActivity() {
             })
         }
 
-
         binding.back.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-
     }
 
-    fun onItemClick(destination: DestinationsItem) {
+    private fun onItemClick(destination: DestinationsItem) {
         val intent = Intent(this, DetailActivity::class.java).apply {
             putExtra(MainAdapter.IMAGE_STORY, "https://storage.googleapis.com/balisnap-storage/${destination.image}")
             putExtra(MainAdapter.TITLE_STORY, destination.name)
