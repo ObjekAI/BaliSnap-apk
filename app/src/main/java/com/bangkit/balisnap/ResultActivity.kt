@@ -53,7 +53,7 @@ class ResultActivity : AppCompatActivity() {
                             val latitude = destination?.latitude?.toDoubleOrNull() ?: 0.0
                             val longitude = destination?.longitude?.toDoubleOrNull() ?: 0.0
 
-                            viewModel.getNearbyDestinations(latitude, longitude, 1).observe(this, Observer { nearbyResult ->
+                            viewModel.getNearbyDestinations(latitude, longitude, 10).observe(this, Observer { nearbyResult ->
                                 when (nearbyResult) {
                                     is Result.Loading -> {
                                         binding.progressBar.visibility = View.VISIBLE
