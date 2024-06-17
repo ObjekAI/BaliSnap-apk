@@ -32,7 +32,7 @@ class DestinationAdapter(private val destinations: List<DestinationsItem?>) :
                 tvItemDesc.text = destination.description
                 Log.d("knlnnn", destination.image.toString())
                 Glide.with(itemView.context)
-                    .load(destination.image)
+                    .load("https://storage.googleapis.com/balisnap-storage/${destination.image}")
                     .into(imgItemPhoto)
             }
         }

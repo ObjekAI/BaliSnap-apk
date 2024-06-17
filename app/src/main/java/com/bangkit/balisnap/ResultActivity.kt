@@ -10,7 +10,9 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bangkit.balisnap.adapter.DestinationAdapter
+import com.bangkit.balisnap.adapter.MainAdapter
 import com.bangkit.balisnap.databinding.ActivityResultBinding
+import com.bangkit.balisnap.response.DestinationsItem
 import com.bangkit.balisnap.utils.Result
 import com.bangkit.balisnap.viewmodel.ResultViewModel
 import com.bangkit.balisnap.viewmodel.ViewModelFactory
@@ -20,6 +22,8 @@ class ResultActivity : AppCompatActivity() {
     private val viewModel: ResultViewModel by viewModels {
         ViewModelFactory.getInstance(this)
     }
+
+    private lateinit var adapter: MainAdapter
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,9 +91,20 @@ class ResultActivity : AppCompatActivity() {
             })
         }
 
+
         binding.back.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
+    }
+
+    fun onItemClick(destination: DestinationsItem) {
+        val intent = Intent(this, DetailActivity::class.java).apply {
+            putExtra(MainAdapter.IMAGE_STORY, "https://storage.googleapis.com/balisnap-storage/${destination.image}")
+            putExtra(MainAdapter.TITLE_STORY, destination.name)
+            putExtra(MainAdapter.DESC_STORY, destination.description)
+        }
+        startActivity(intent)
     }
 }
