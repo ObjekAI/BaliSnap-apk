@@ -31,7 +31,7 @@ class ResultActivity : AppCompatActivity() {
         val persen = intent.getStringExtra(MainActivity.PERSEN) ?: ""
 
         // Display the prediction results
-        binding.hasil.text = "Prediksi: $prediksi"
+        binding.hasil.text = "Location based on the photo: $prediksi"
         Log.d("Prediction", prediksi)
 
         if (prediksi.isNotEmpty()) {
