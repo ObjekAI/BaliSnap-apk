@@ -105,6 +105,7 @@
         android:fontFamily="@font/poppins"
         android:text="@string/signup"
         android:textColor="@color/blueberry"
+        app:layout_constraintLeft_toRightOf="@+id/tulisan"
         app:layout_constraintBottom_toTopOf="@id/sign_in_button"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_edit_text" />

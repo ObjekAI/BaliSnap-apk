@@ -14,6 +14,7 @@ import com.bangkit.balisnap.adapter.FoodAdapter
 import com.bangkit.balisnap.adapter.MainAdapter
 import com.bangkit.balisnap.databinding.ActivityFoodBinding
 import com.bangkit.balisnap.databinding.ActivityMainBinding
+import com.bangkit.balisnap.response.FoodsItem
 import com.bangkit.balisnap.utils.Result
 import com.bangkit.balisnap.viewmodel.FoodViewModel
 import com.bangkit.balisnap.viewmodel.MainViewModel
@@ -40,6 +41,9 @@ class FoodActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         adapter = FoodAdapter()
+        adapter.setOnItemClickListener { destination ->
+            onItemClick(destination)
+        }
         binding.recyclerview.layoutManager = LinearLayoutManager(this)
         binding.recyclerview.adapter = adapter
 
@@ -70,5 +74,14 @@ class FoodActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    fun onItemClick(food: FoodsItem) {
+        val intent = Intent(this, DetailActivity::class.java).apply {
+            putExtra(MainAdapter.IMAGE_STORY, "https://storage.googleapis.com/balisnap-storage/${food.image}")
+            putExtra(MainAdapter.TITLE_STORY, food.name)
+            putExtra(MainAdapter.DESC_STORY, food.description)
+        }
+        startActivity(intent)
     }
 }

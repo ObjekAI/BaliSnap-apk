@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        viewModel.getDestination(-8.724451, 115.176827, 1000).observe(this) { result ->
+        viewModel.getDestination(-8.724451, 115.176827, 100).observe(this) { result ->
             when (result) {
                 is Result.Success -> {
                     adapter.submitList(result.data.data?.destinations)
