@@ -42,7 +42,7 @@
         app:srcCompat="@drawable/gapurakanan"
         tools:layout_editor_absoluteX="270dp"
         tools:layout_editor_absoluteY="0dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintLeft_toRightOf="@id/logo_image_view" />
 
     <EditText
         android:id="@+id/email_edit_text"

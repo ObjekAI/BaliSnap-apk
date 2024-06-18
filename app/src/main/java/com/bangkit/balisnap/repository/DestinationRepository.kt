@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.liveData
 import com.bangkit.balisnap.api.ApiService
 import com.bangkit.balisnap.response.DestinationResponse
+import com.bangkit.balisnap.response.FoodResponse
 import com.bangkit.balisnap.utils.Result
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -23,6 +24,16 @@ class DestinationRepository private constructor(
     private val appContext = context.applicationContext
     private val fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context.applicationContext)
+
+    fun getFoods() = liveData{
+        emit(Result.Loading)
+        try {
+            val response = apiService.getFoods()
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            emit(Result.Error("${e.message}"))
+        }
+    }
 
     fun getDestination(lat : Double, lon : Double, radius : Int) = liveData {
         emit(Result.Loading)

@@ -18,6 +18,9 @@ class ViewModelFactory private constructor(private val repository: DestinationRe
             modelClass.isAssignableFrom(ResultViewModel::class.java) -> {
                 ResultViewModel(repository) as T
             }
+            modelClass.isAssignableFrom(FoodViewModel::class.java) -> {
+                FoodViewModel(repository) as T
+            }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
     }

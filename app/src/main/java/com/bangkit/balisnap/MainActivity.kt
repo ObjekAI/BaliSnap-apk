@@ -136,22 +136,31 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.foodButton.setOnClickListener{
+            authViewModel.signOut()
+            Toast.makeText(this, "Food", Toast.LENGTH_SHORT).show()
+            // Navigate to another activity or perform other actions
+            val intent = Intent(this, FoodActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
-    if (!allPermissionsGranted()) {
-        requestPermissionLauncher.launch(REQUIRED_PERMISSION)
-    } else {
-        getLocation()
-    }
-}
 
-fun onItemClick(destination: DestinationsItem) {
-    val intent = Intent(this, DetailActivity::class.java).apply {
-        putExtra(MainAdapter.IMAGE_STORY, "https://storage.googleapis.com/balisnap-storage/${destination.image}")
-        putExtra(MainAdapter.TITLE_STORY, destination.name)
-        putExtra(MainAdapter.DESC_STORY, destination.description)
+        if (!allPermissionsGranted()) {
+            requestPermissionLauncher.launch(REQUIRED_PERMISSION)
+        } else {
+            getLocation()
+        }
     }
-    startActivity(intent)
-}
+
+    fun onItemClick(destination: DestinationsItem) {
+        val intent = Intent(this, DetailActivity::class.java).apply {
+            putExtra(MainAdapter.IMAGE_STORY, "https://storage.googleapis.com/balisnap-storage/${destination.image}")
+            putExtra(MainAdapter.TITLE_STORY, destination.name)
+            putExtra(MainAdapter.DESC_STORY, destination.description)
+        }
+        startActivity(intent)
+    }
 
 
     private fun getSearch(name: String) {
