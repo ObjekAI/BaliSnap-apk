@@ -86,27 +86,15 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-
-        viewModel.getDestination(-8.724451, 115.176827, 100).observe(this) { result ->
-            when (result) {
-                is Result.Success -> {
-                    adapter.submitList(result.data.data?.destinations)
-                }
-                is Result.Error -> {
-                    Log.e("MainActivity", "Error: ${result.error}")
-                    Toast.makeText(this, "Error: ${result.error}", Toast.LENGTH_SHORT).show()
-                }
-                is Result.Loading -> {
-                    // Tangani kasus loading di sini jika diperlukan
-                }
-                else -> {
-                    // Tangani kasus lain yang mungkin terjadi
-                    Log.e("MainActivity", "Unexpected result: $result")
-                    Toast.makeText(this, "Unexpected result", Toast.LENGTH_SHORT).show()
-                }
+        fun getNearbyDestination(lat: Double, lon: Double, radius: Int) {
+            viewModel.getDestination(lat, lon, radius).observe(this@MainActivity) {
             }
         }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+
+
 
 
 //        binding.recyclerview.apply {
@@ -157,6 +145,8 @@ class MainActivity : AppCompatActivity() {
             getLocation()
         }
     }
+
+
 
     fun onItemClick(destination: DestinationsItem) {
         val intent = Intent(this, DetailActivity::class.java).apply {
@@ -210,6 +200,25 @@ class MainActivity : AppCompatActivity() {
                 Log.e("lokasi", "$location")
                 location?.let {
                     getAddressFromLocation(it.latitude, it.longitude)
+                    viewModel.getDestination(it.latitude, it.longitude, 1000).observe(this) { result ->
+                        when (result) {
+                            is Result.Success -> {
+                                adapter.submitList(result.data.data?.destinations)
+                            }
+                            is Result.Error -> {
+                                Log.e("MainActivity", "Error: ${result.error}")
+                                Toast.makeText(this, "Error: ${result.error}", Toast.LENGTH_SHORT).show()
+                            }
+                            is Result.Loading -> {
+                                // Tangani kasus loading di sini jika diperlukan
+                            }
+                            else -> {
+                                // Tangani kasus lain yang mungkin terjadi
+                                Log.e("MainActivity", "Unexpected result: $result")
+                                Toast.makeText(this, "Unexpected result", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
                 } ?: run {
                     Toast.makeText(this@MainActivity, getString(R.string.location_not_found), Toast.LENGTH_SHORT).show()
                 }
