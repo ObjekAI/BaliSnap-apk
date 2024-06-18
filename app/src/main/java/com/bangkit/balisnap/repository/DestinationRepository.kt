@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.bangkit.balisnap.api.ApiService
+import com.bangkit.balisnap.like.LikeDao
+import com.bangkit.balisnap.like.LikeDestination
 import com.bangkit.balisnap.response.DestinationResponse
 import com.bangkit.balisnap.response.FoodResponse
 import com.bangkit.balisnap.response.FoodsItem
@@ -20,6 +22,7 @@ import kotlinx.coroutines.tasks.await
 class DestinationRepository private constructor(
     context: Context,
     private val apiService: ApiService,
+    private val likeDao: LikeDao,
 ) {
     private val appContext = context.applicationContext
     private val fusedLocationClient: FusedLocationProviderClient =
@@ -66,17 +69,29 @@ class DestinationRepository private constructor(
             null
         }
     }
+    fun getFavoriteUser(): LiveData<List<LikeDestination>> = likeDao.getLikeDesti()
+
+    fun getFavoriteByName(name: String): LiveData<LikeDestination> = likeDao.getFavoriteByName(name)
+
+    suspend fun insert(likedestination: LikeDestination) {
+        likeDao.insert(likedestination)
+    }
+
+    suspend fun delete(likedestination: LikeDestination) {
+        likeDao.delete(likedestination)
+    }
 
     companion object {
         @Volatile
         private var instance: DestinationRepository? = null
         fun getInstance(
             context: Context,
-            apiService: ApiService
+            apiService: ApiService,
+            likeDao: LikeDao
 
         ): DestinationRepository =
             instance ?: synchronized(this) {
-                instance ?: DestinationRepository(context, apiService)
+                instance ?: DestinationRepository(context, apiService, likeDao)
             }.also { instance = it }
     }
 

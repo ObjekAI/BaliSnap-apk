@@ -24,4 +24,11 @@ interface ApiService {
     @GET("/foods")
     suspend fun getFoods() : FoodResponse
 
+    @GET("destinations/nearby")
+    fun getDetail(
+        @Query("image") image:String,
+        @Query("name") name:String,
+        @Query("description") description:String
+    ) : Call<DestinationResponse>
+
 }

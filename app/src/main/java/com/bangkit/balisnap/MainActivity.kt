@@ -81,6 +81,11 @@ class MainActivity : AppCompatActivity() {
         binding.scanButton.setOnClickListener {
             startCameraX()
         }
+        binding.buttonFavorite.setOnClickListener {
+            val intent = Intent(this, LikeActivity::class.java)
+            startActivity(intent)
+        }
+
 
 
         viewModel.getDestination(-8.724451, 115.176827, 1000).observe(this) { result ->
@@ -321,4 +326,3 @@ class MainActivity : AppCompatActivity() {
         const val PERSEN = "SCORE"
     }
 }
-
