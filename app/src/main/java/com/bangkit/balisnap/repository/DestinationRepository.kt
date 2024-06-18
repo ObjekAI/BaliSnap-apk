@@ -6,10 +6,12 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.util.Log
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.bangkit.balisnap.api.ApiService
 import com.bangkit.balisnap.response.DestinationResponse
 import com.bangkit.balisnap.response.FoodResponse
+import com.bangkit.balisnap.response.FoodsItem
 import com.bangkit.balisnap.utils.Result
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -18,14 +20,12 @@ import kotlinx.coroutines.tasks.await
 class DestinationRepository private constructor(
     context: Context,
     private val apiService: ApiService,
-
-
-    ) {
+) {
     private val appContext = context.applicationContext
     private val fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context.applicationContext)
 
-    fun getFoods() = liveData{
+    fun getFoods(): LiveData<Result<FoodResponse>> = liveData{
         emit(Result.Loading)
         try {
             val response = apiService.getFoods()

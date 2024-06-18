@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bangkit.balisnap.adapter.FoodAdapter
 import com.bangkit.balisnap.adapter.MainAdapter
 import com.bangkit.balisnap.databinding.ActivityFoodBinding
@@ -38,18 +39,23 @@ class FoodActivity : AppCompatActivity() {
         binding = ActivityFoodBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        adapter = FoodAdapter()
+        binding.recyclerview.layoutManager = LinearLayoutManager(this)
+        binding.recyclerview.adapter = adapter
+
         viewModel.getFoods().observe(this) { result ->
             when (result) {
                 is Result.Success -> {
                     adapter.submitList(result.data.data?.foods)
                     Log.e("bisa semoga bismillah", "Success: BERHASIL")
-                    Toast.makeText(this, "Success: ${result.data.data?.foods}", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "Success: ${result.data.data?.foods}", Toast.LENGTH_SHORT).show()
                 }
                 is Result.Error -> {
                     Log.e("errorrrrr", "Error: ${result.error}")
                     Toast.makeText(this, "Error: ${result.error}", Toast.LENGTH_SHORT).show()
                 }
                 is Result.Loading -> {
+                    Log.e("bisa semoga bismillah", "LOADING")
                     // Tangani kasus loading di sini jika diperlukan
                 }
                 else -> {

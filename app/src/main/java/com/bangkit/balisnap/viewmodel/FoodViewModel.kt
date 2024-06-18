@@ -5,6 +5,5 @@ import com.bangkit.balisnap.repository.DestinationRepository
 
 class FoodViewModel (private val destinationrepo: DestinationRepository) : ViewModel() {
 
-    fun getFoods()=
-        destinationrepo.getFoods()
+    fun getFoods() = destinationrepo.getFoods()
 }

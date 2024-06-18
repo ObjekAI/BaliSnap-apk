@@ -16,7 +16,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASEURL", "\"https://balisnap-qczsjfqsuq-et.a.run.app/destinations/\"")
+        buildConfigField("String", "BASEURL", "\"https://balisnap-qczsjfqsuq-et.a.run.app/\"")
     }
 
     buildFeatures {

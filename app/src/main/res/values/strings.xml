@@ -14,5 +14,7 @@
     <string name="location_need_permission">location need permission</string>
     <string name="location_error_name">location error</string>
     <string name="welcome">Hi, Welcome to BaliSnap</string>
+    <string name="login"><u>SignIn</u></string>
+    <string name="signup"><u>SignUp</u></string>
 
 </resources>

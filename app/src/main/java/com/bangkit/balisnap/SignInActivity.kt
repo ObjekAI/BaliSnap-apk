@@ -42,5 +42,10 @@ class SignInActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error: $it", Toast.LENGTH_SHORT).show()
             }
         }
+
+        binding.signUpButton.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
