@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/skyblue"
     tools:context=".ResultActivity">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -17,6 +18,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@android:color/white"
         android:backgroundTint="@color/blueberry"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:fontFamily="@font/shrikhand"
+        android:text="Result"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/hasil"
+        app:layout_constraintLeft_toRightOf="@id/back"
+        app:layout_constraintRight_toRightOf="parent" />
+
 
     <TextView
         android:id="@+id/hasil"

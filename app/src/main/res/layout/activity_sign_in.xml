@@ -99,7 +99,7 @@
         android:id="@+id/sign_up_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="70dp"
+        android:layout_marginRight="60dp"
         android:layout_marginBottom="45dp"
         android:clickable="true"
         android:fontFamily="@font/poppins"
