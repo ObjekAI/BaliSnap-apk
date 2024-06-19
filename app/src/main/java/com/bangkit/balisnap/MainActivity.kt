@@ -200,7 +200,7 @@ class MainActivity : AppCompatActivity() {
                 Log.e("lokasi", "$location")
                 location?.let {
                     getAddressFromLocation(it.latitude, it.longitude)
-                    viewModel.getDestination(it.latitude, it.longitude, 1000).observe(this) { result ->
+                    viewModel.getDestination(it.latitude, it.longitude, 1000000).observe(this) { result ->
                         when (result) {
                             is Result.Success -> {
                                 adapter.submitList(result.data.data?.destinations)

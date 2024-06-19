@@ -14,6 +14,8 @@
         app:srcCompat="@drawable/back"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
+        app:tint="@android:color/white"
+        android:backgroundTint="@color/blueberry"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 

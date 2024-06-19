@@ -16,7 +16,9 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:src="@drawable/back"/>
+        android:src="@drawable/back"
+        app:tint="@android:color/white"
+        android:backgroundTint="@color/blueberry"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"

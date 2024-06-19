@@ -15,7 +15,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"/>
+        android:layout_marginLeft="20dp"
+        android:backgroundTint="@color/blueberry"
+        app:tint="@android:color/white"/>
 
     <ImageView
         android:id="@+id/tv_detail_photo"
@@ -69,6 +71,8 @@
         android:layout_marginEnd="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/like" />
+        app:srcCompat="@drawable/like"
+        android:backgroundTint="@color/blueberry"
+        app:tint="@android:color/white"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
